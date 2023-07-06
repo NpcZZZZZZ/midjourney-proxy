@@ -1,8 +1,5 @@
 package com.github.novicezk.midjourney.service.impl;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
-import cn.hutool.core.exceptions.CheckedUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +18,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -29,7 +27,7 @@ public class NotifyServiceImpl implements NotifyService {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final ThreadPoolTaskExecutor executor;
     private final RestTemplate restTemplate;
-    private final TimedCache<String, Object> taskLocks = CacheUtil.newTimedCache(Duration.ofHours(1).toMillis());
+    private final Map<String, Object> taskLocks = new ConcurrentHashMap<>();
 
     public NotifyServiceImpl(ProxyProperties properties, RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -47,7 +45,7 @@ public class NotifyServiceImpl implements NotifyService {
         }
         String taskId = task.getId();
         TaskStatus taskStatus = task.getStatus();
-        Object taskLock = this.taskLocks.get(taskId, (CheckedUtil.Func0Rt<Object>) Object::new);
+        Object taskLock = this.taskLocks.computeIfAbsent(taskId, id -> new Object());
         try {
             String paramsStr = OBJECT_MAPPER.writeValueAsString(task);
             this.executor.execute(() -> {
