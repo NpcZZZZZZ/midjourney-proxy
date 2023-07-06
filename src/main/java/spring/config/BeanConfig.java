@@ -3,13 +3,13 @@ package spring.config;
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.service.DiscordService;
-import com.github.novicezk.midjourney.service.DiscordServiceImpl;
 import com.github.novicezk.midjourney.service.TaskStoreService;
 import com.github.novicezk.midjourney.service.TranslateService;
-import com.github.novicezk.midjourney.service.store.InMemoryTaskStoreServiceImpl;
-import com.github.novicezk.midjourney.service.store.RedisTaskStoreServiceImpl;
-import com.github.novicezk.midjourney.service.translate.BaiduTranslateServiceImpl;
-import com.github.novicezk.midjourney.service.translate.GPTTranslateServiceImpl;
+import com.github.novicezk.midjourney.service.impl.DiscordServiceImpl;
+import com.github.novicezk.midjourney.service.impl.store.InMemoryTaskStoreServiceImpl;
+import com.github.novicezk.midjourney.service.impl.store.RedisTaskStoreServiceImpl;
+import com.github.novicezk.midjourney.service.impl.translate.BaiduTranslateServiceImpl;
+import com.github.novicezk.midjourney.service.impl.translate.GPTTranslateServiceImpl;
 import com.github.novicezk.midjourney.support.DiscordHelper;
 import com.github.novicezk.midjourney.support.Task;
 import com.github.novicezk.midjourney.support.TaskMixin;
@@ -57,14 +57,14 @@ public class BeanConfig {
         ).collect(Collectors.toMap(x -> x.getDiscordGuildId() + ":" + x.getDiscordChannelId(), Function.identity()));
     }
 
-	@Bean
-	TranslateService translateService(ProxyProperties properties) {
-		return switch (properties.getTranslateWay()) {
-			case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
-			case GPT -> new GPTTranslateServiceImpl(properties);
-			default -> prompt -> prompt;
-		};
-	}
+    @Bean
+    TranslateService translateService(ProxyProperties properties) {
+        return switch (properties.getTranslateWay()) {
+            case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
+            case GPT -> new GPTTranslateServiceImpl(properties);
+            default -> prompt -> prompt;
+        };
+    }
 
     @Bean
     public TaskStoreService taskStoreService(ProxyProperties proxyProperties, RedisConnectionFactory redisConnectionFactory) {
@@ -87,13 +87,13 @@ public class BeanConfig {
     }
 
 
-	@Bean
-	Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(ProxyProperties properties) {
-		if (properties.isIncludeTaskExtended()) {
-			return builder -> {
-			};
-		}
-		return builder -> builder.mixIn(Task.class, TaskMixin.class);
-	}
+    @Bean
+    Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(ProxyProperties properties) {
+        if (properties.isIncludeTaskExtended()) {
+            return builder -> {
+            };
+        }
+        return builder -> builder.mixIn(Task.class, TaskMixin.class);
+    }
 
 }

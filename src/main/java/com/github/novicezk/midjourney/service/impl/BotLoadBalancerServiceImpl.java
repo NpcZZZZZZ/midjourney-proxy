@@ -1,6 +1,7 @@
-package com.github.novicezk.midjourney.service;
+package com.github.novicezk.midjourney.service.impl;
 
 import com.github.novicezk.midjourney.ProxyProperties;
+import com.github.novicezk.midjourney.service.LoadBalancerService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

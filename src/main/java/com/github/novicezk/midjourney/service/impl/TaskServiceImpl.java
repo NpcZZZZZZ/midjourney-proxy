@@ -1,9 +1,12 @@
-package com.github.novicezk.midjourney.service;
+package com.github.novicezk.midjourney.service.impl;
 
 import com.github.novicezk.midjourney.ReturnCode;
 import com.github.novicezk.midjourney.enums.BlendDimensions;
 import com.github.novicezk.midjourney.result.Message;
 import com.github.novicezk.midjourney.result.SubmitResultVO;
+import com.github.novicezk.midjourney.service.DiscordService;
+import com.github.novicezk.midjourney.service.TaskService;
+import com.github.novicezk.midjourney.service.TaskStoreService;
 import com.github.novicezk.midjourney.support.Task;
 import com.github.novicezk.midjourney.support.TaskQueueHelper;
 import com.github.novicezk.midjourney.util.MimeTypeUtils;

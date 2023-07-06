@@ -1,10 +1,11 @@
-package com.github.novicezk.midjourney.service;
+package com.github.novicezk.midjourney.service.impl;
 
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.ReturnCode;
 import com.github.novicezk.midjourney.enums.BlendDimensions;
 import com.github.novicezk.midjourney.result.Message;
+import com.github.novicezk.midjourney.service.DiscordService;
 import eu.maxschuster.dataurl.DataUrl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
