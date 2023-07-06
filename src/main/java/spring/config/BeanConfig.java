@@ -58,9 +58,9 @@ public class BeanConfig {
     }
 
     @Bean
-    TranslateService translateService(ProxyProperties properties) {
+    TranslateService translateService(ProxyProperties properties, RestTemplate restTemplate) {
         return switch (properties.getTranslateWay()) {
-            case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
+            case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate(), restTemplate);
             case GPT -> new GPTTranslateServiceImpl(properties);
             default -> prompt -> prompt;
         };

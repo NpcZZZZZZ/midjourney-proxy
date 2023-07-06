@@ -73,22 +73,28 @@
             <groupId>com.unfbx</groupId>
             <artifactId>chatgpt-java</artifactId>
             <version>${chatgpt-java.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>eu.maxschuster</groupId>
             <artifactId>dataurl</artifactId>
             <version>${dataurl.version}</version>
         </dependency>
-		<dependency>
-			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
-			<version>${knife4j.verison}</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.bitwalker</groupId>
-			<artifactId>UserAgentUtils</artifactId>
-			<version>${user-agent-utils.verison}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <version>${knife4j.verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.verison}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
