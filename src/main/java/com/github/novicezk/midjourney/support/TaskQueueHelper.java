@@ -8,11 +8,11 @@ import com.github.novicezk.midjourney.result.Message;
 import com.github.novicezk.midjourney.result.SubmitResultVO;
 import com.github.novicezk.midjourney.service.NotifyService;
 import com.github.novicezk.midjourney.service.TaskStoreService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

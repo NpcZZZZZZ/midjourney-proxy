@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.utils.data.DataArray;
 import net.dv8tion.jda.api.utils.data.DataObject;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 public abstract class MessageHandler {
 	@Resource

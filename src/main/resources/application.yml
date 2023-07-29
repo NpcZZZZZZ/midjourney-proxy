@@ -1,5 +1,6 @@
 mj:
   discord:
+    user-wss: true
     discordAccountConfigList:
       - guild-id: xxx
         channel-id: xxx
@@ -13,7 +14,6 @@ mj:
       - botToken: xxx
         channel-id: xxx
     user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36
-    user-wss: true
   task-store:
     type: in_memory
     timeout: 30d
@@ -22,3 +22,6 @@ mj:
     timeout-minutes: 5
     core-size: 3
     queue-size: 10
+  proxy:
+    host: 127.0.0.1
+    port: 10809

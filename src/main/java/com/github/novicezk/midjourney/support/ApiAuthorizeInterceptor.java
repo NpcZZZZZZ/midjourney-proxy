@@ -4,12 +4,12 @@ package com.github.novicezk.midjourney.support;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.novicezk.midjourney.Constants;
 import com.github.novicezk.midjourney.ProxyProperties;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequiredArgsConstructor

@@ -27,8 +27,8 @@ import com.github.novicezk.midjourney.util.TaskChangeParams;
 import eu.maxschuster.dataurl.DataUrl;
 import eu.maxschuster.dataurl.DataUrlSerializer;
 import eu.maxschuster.dataurl.IDataUrlSerializer;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Api(tags = "任务提交")
+@Tag(name =  "任务提交")
 @RestController
 @RequestMapping("/submit")
 @RequiredArgsConstructor
@@ -51,7 +51,7 @@ public class SubmitController {
     private final TaskService taskService;
     private final LoadBalancerService loadBalancerService;
 
-    @ApiOperation(value = "提交Imagine任务")
+    @Operation(summary =  "提交Imagine任务")
     @PostMapping("/imagine")
     public SubmitResultVO imagine(@RequestBody SubmitImagineDTO imagineDTO) {
         String prompt = imagineDTO.getPrompt();
@@ -90,7 +90,7 @@ public class SubmitController {
         return this.taskService.submitImagine(task, dataUrl);
     }
 
-    @ApiOperation(value = "绘图变化-simple")
+    @Operation(summary =  "绘图变化-simple")
     @PostMapping("/simple-change")
     public SubmitResultVO simpleChange(@RequestBody SubmitSimpleChangeDTO simpleChangeDTO) {
         TaskChangeParams changeParams = ConvertUtils.convertChangeParams(simpleChangeDTO.getContent());
@@ -106,7 +106,7 @@ public class SubmitController {
         return change(changeDTO);
     }
 
-    @ApiOperation(value = "绘图变化")
+    @Operation(summary =  "绘图变化")
     @PostMapping("/change")
     public SubmitResultVO change(@RequestBody SubmitChangeDTO changeDTO) {
         if (CharSequenceUtil.isBlank(changeDTO.getTaskId())) {
@@ -157,7 +157,7 @@ public class SubmitController {
         }
     }
 
-    @ApiOperation(value = "提交Describe任务")
+    @Operation(summary =  "提交Describe任务")
     @PostMapping("/describe")
     public SubmitResultVO describe(@RequestBody SubmitDescribeDTO describeDTO) {
         if (CharSequenceUtil.isBlank(describeDTO.getBase64())) {
@@ -178,7 +178,7 @@ public class SubmitController {
         return this.taskService.submitDescribe(task, dataUrl);
     }
 
-    @ApiOperation(value = "提交Blend任务")
+    @Operation(summary =  "提交Blend任务")
     @PostMapping("/blend")
     public SubmitResultVO blend(@RequestBody SubmitBlendDTO blendDTO) {
         List<String> base64Array = blendDTO.getBase64Array();
