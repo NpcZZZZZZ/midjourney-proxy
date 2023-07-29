@@ -22,6 +22,6 @@ public class UserLoadBalancerServiceImpl implements LoadBalancerService {
         int size = discordAccountConfigList.size();
         int i = getAndIncrement() % size;
         ProxyProperties.DiscordConfig.DiscordAccountConfig discordAccountConfig = discordAccountConfigList.get(i);
-        return discordAccountConfig.getGuildId() + ":" + discordAccountConfig.getChannelId();
+        return discordAccountConfig.getGuildId() + ":" + discordAccountConfig.getChannelId() + ":" + discordAccountConfig.getUserToken();
     }
 }

@@ -54,11 +54,11 @@ public class BeanConfig {
                 ResourceUtil.readUtf8Str("api-params/describe.json"),
                 ResourceUtil.readUtf8Str("api-params/blend.json"),
                 ResourceUtil.readUtf8Str("api-params/message.json"), restTemplate)
-        ).collect(Collectors.toMap(x -> x.getDiscordGuildId() + ":" + x.getDiscordChannelId(), Function.identity()));
+        ).collect(Collectors.toMap(x -> x.getDiscordGuildId() + ":" + x.getDiscordChannelId() + ":" + x.getDiscordUserToken(), Function.identity()));
     }
 
     @Bean
-    TranslateService translateService(ProxyProperties properties, RestTemplate restTemplate) {
+    public TranslateService translateService(ProxyProperties properties, RestTemplate restTemplate) {
         return switch (properties.getTranslateWay()) {
             case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate(), restTemplate);
             case GPT -> new GPTTranslateServiceImpl(properties);
@@ -88,7 +88,7 @@ public class BeanConfig {
 
 
     @Bean
-    Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(ProxyProperties properties) {
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(ProxyProperties properties) {
         if (properties.isIncludeTaskExtended()) {
             return builder -> {
             };

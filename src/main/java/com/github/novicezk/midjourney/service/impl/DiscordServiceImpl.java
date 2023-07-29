@@ -30,6 +30,7 @@ public class DiscordServiceImpl implements DiscordService {
     private final String discordGuildId;
     @Getter
     private final String discordChannelId;
+    @Getter
     private final String discordUserToken;
     private final String discordSessionId;
     private final String userAgent;
