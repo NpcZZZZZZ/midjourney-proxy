@@ -3,8 +3,7 @@ package com.github.novicezk.midjourney.support;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.novicezk.midjourney.enums.TaskAction;
 import com.github.novicezk.midjourney.enums.TaskStatus;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
@@ -13,39 +12,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@ApiModel("任务")
+@Schema(description = "任务")
 public class Task implements Serializable {
     @Serial
     private static final long serialVersionUID = -674915748204390789L;
 
     private TaskAction action;
-    @ApiModelProperty("任务ID")
+    @Schema(description = "任务ID")
     private String id;
-    @ApiModelProperty("提示词")
+    @Schema(description = "提示词")
     private String prompt;
-    @ApiModelProperty("提示词-英文")
+    @Schema(description = "提示词-英文")
     private String promptEn;
 
-    @ApiModelProperty("任务描述")
+    @Schema(description = "任务描述")
     private String description;
-    @ApiModelProperty("自定义参数")
+    @Schema(description = "自定义参数")
     private String state;
-    @ApiModelProperty("提交时间")
+    @Schema(description = "提交时间")
     private Long submitTime;
-    @ApiModelProperty("开始执行时间")
+    @Schema(description = "开始执行时间")
     private Long startTime;
-    @ApiModelProperty("结束时间")
+    @Schema(description = "结束时间")
     private Long finishTime;
-    @ApiModelProperty("图片url")
+    @Schema(description = "图片url")
     private String imageUrl;
-    @ApiModelProperty("任务状态")
+    @Schema(description = "任务状态")
     private TaskStatus status = TaskStatus.NOT_START;
-    @ApiModelProperty("任务进度")
+    @Schema(description = "任务进度")
     private String progress;
-    @ApiModelProperty("失败原因")
+    @Schema(description = "失败原因")
     private String failReason;
 
-    @ApiModelProperty("关联key, 绘图变化时需对应初始任务的账号")
+    @Schema(description = "关联key, 绘图变化时需对应初始任务的账号")
     private String associationKey;
 
     // 任务扩展属性，仅支持基本类型

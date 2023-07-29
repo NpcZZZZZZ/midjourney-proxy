@@ -2,7 +2,7 @@ package spring.config;
 
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.service.LoadBalancerService;
-import com.github.novicezk.midjourney.service.impl.BotLoadBalancerServiceImpl;
+import com.github.novicezk.midjourney.service.impl.balancer.BotLoadBalancerServiceImpl;
 import com.github.novicezk.midjourney.support.DiscordHelper;
 import com.github.novicezk.midjourney.wss.WebSocketStarter;
 import com.github.novicezk.midjourney.wss.bot.BotMessageListener;

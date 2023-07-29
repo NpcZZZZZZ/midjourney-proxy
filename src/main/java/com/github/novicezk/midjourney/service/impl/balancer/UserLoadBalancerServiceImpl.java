@@ -1,4 +1,4 @@
-package com.github.novicezk.midjourney.service.impl;
+package com.github.novicezk.midjourney.service.impl.balancer;
 
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.service.LoadBalancerService;

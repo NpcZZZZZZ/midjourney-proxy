@@ -1,20 +1,19 @@
 package com.github.novicezk.midjourney.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
 @Data
-@ApiModel("Imagine提交参数")
+@Schema(description = "Imagine提交参数")
 @EqualsAndHashCode(callSuper = true)
 public class SubmitImagineDTO extends BaseSubmitDTO {
 
-	@ApiModelProperty(value = "提示词", required = true, example = "Cat")
+	@Schema(description  = "提示词", requiredMode = Schema.RequiredMode.REQUIRED, example = "Cat")
 	private String prompt;
 
-	@ApiModelProperty(value = "垫图base64")
+	@Schema(description  = "垫图base64")
 	private String base64;
 
 }

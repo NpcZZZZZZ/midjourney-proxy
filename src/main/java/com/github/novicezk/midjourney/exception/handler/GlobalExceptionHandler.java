@@ -3,11 +3,11 @@ package com.github.novicezk.midjourney.exception.handler;
 import com.github.novicezk.midjourney.ReturnCode;
 import com.github.novicezk.midjourney.exception.AccountException;
 import com.github.novicezk.midjourney.result.SubmitResultVO;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author NpcZZZZZZ

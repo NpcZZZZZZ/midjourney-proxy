@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.14</version>
+        <version>3.1.2</version>
     </parent>
 
     <groupId>com.github.novicezk</groupId>
@@ -15,14 +15,14 @@
     <version>2.3.5</version>
 
     <properties>
-        <hutool.version>5.8.18</hutool.version>
+        <hutool.version>5.8.20</hutool.version>
         <org-json.version>20220924</org-json.version>
         <jda.version>5.0.0-beta.9</jda.version>
         <chatgpt-java.version>1.0.14-beta1</chatgpt-java.version>
         <dataurl.version>2.0.0</dataurl.version>
         <knife4j.verison>4.1.0</knife4j.verison>
         <user-agent-utils.verison>1.21</user-agent-utils.verison>
-        <httpclient.verison>4.5.14</httpclient.verison>
+        <httpclient.verison>5.2</httpclient.verison>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -32,12 +32,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
@@ -73,7 +82,15 @@
             <groupId>com.unfbx</groupId>
             <artifactId>chatgpt-java</artifactId>
             <version>${chatgpt-java.version}</version>
+<<<<<<< HEAD
+<<<<<<< HEAD
             <exclusions>
+=======
+			<exclusions>
+>>>>>>> 296ac0b (解决日志冲突)
+=======
+            <exclusions>
+>>>>>>> 6b517e8 (fix: 修复SLF4J冲突问题; 修复V Subtle无法获取进度的bug)
                 <exclusion>
                     <artifactId>slf4j-simple</artifactId>
                     <groupId>org.slf4j</groupId>
@@ -85,6 +102,8 @@
             <artifactId>dataurl</artifactId>
             <version>${dataurl.version}</version>
         </dependency>
+<<<<<<< HEAD
+=======
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
@@ -95,9 +114,20 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>${user-agent-utils.verison}</version>
         </dependency>
+>>>>>>> 6b517e8 (fix: 修复SLF4J冲突问题; 修复V Subtle无法获取进度的bug)
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>${knife4j.verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
             <version>${httpclient.verison}</version>
         </dependency>
 
