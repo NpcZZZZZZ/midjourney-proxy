@@ -82,15 +82,7 @@
             <groupId>com.unfbx</groupId>
             <artifactId>chatgpt-java</artifactId>
             <version>${chatgpt-java.version}</version>
-<<<<<<< HEAD
-<<<<<<< HEAD
             <exclusions>
-=======
-			<exclusions>
->>>>>>> 296ac0b (解决日志冲突)
-=======
-            <exclusions>
->>>>>>> 6b517e8 (fix: 修复SLF4J冲突问题; 修复V Subtle无法获取进度的bug)
                 <exclusion>
                     <artifactId>slf4j-simple</artifactId>
                     <groupId>org.slf4j</groupId>
@@ -102,19 +94,6 @@
             <artifactId>dataurl</artifactId>
             <version>${dataurl.version}</version>
         </dependency>
-<<<<<<< HEAD
-=======
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
-            <version>${knife4j.verison}</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
-            <version>${user-agent-utils.verison}</version>
-        </dependency>
->>>>>>> 6b517e8 (fix: 修复SLF4J冲突问题; 修复V Subtle无法获取进度的bug)
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
