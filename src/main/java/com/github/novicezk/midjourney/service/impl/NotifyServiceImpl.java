@@ -57,7 +57,7 @@ public class NotifyServiceImpl implements NotifyService {
                         if (responseEntity.getStatusCode() == HttpStatus.OK) {
                             log.debug("推送任务变更成功, 任务ID: {}, status: {}, notifyHook: {}", taskId, taskStatus, notifyHook);
                         } else {
-                            log.warn("推送任务变更失败, 任务ID: {}, notifyHook: {}, code: {}, msg: {}", taskId, notifyHook, responseEntity.getStatusCodeValue(), responseEntity.getBody());
+                            log.warn("推送任务变更失败, 任务ID: {}, notifyHook: {}, code: {}, msg: {}", taskId, notifyHook, responseEntity.getStatusCode().value(), responseEntity.getBody());
                         }
                     } catch (Exception e) {
                         log.warn("推送任务变更失败, 任务ID: {}, notifyHook: {}, 描述: {}", taskId, notifyHook, e.getMessage());

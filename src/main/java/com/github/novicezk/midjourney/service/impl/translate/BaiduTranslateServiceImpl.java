@@ -5,10 +5,11 @@ import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.MD5;
+import cn.hutool.json.JSONObject;
 import com.github.novicezk.midjourney.ProxyProperties;
 import com.github.novicezk.midjourney.service.TranslateService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.support.BeanDefinitionValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,13 +44,13 @@ public class BaiduTranslateServiceImpl implements TranslateService {
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
             if (responseEntity.getStatusCode() != HttpStatus.OK || CharSequenceUtil.isBlank(responseEntity.getBody())) {
-                throw new ValidateException(responseEntity.getStatusCodeValue() + " - " + responseEntity.getBody());
+                throw new ValidateException(responseEntity.getStatusCode().value() + " - " + responseEntity.getBody());
             }
             JSONObject result = new JSONObject(responseEntity.getBody());
-            if (result.has("error_code")) {
-                throw new ValidateException(result.getString("error_code") + " - " + result.getString("error_msg"));
+            if (StringUtils.isNotBlank(result.getStr("error_code"))) {
+                throw new ValidateException(result.getStr("error_code") + " - " + result.getStr("error_msg"));
             }
-            return result.getJSONArray("trans_result").getJSONObject(0).getString("dst");
+            return result.getJSONArray("trans_result").getJSONObject(0).getStr("dst");
         } catch (Exception e) {
             log.warn("调用百度翻译失败: {}", e.getMessage());
         }

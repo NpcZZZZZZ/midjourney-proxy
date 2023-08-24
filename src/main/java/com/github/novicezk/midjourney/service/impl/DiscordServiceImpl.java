@@ -2,6 +2,8 @@ package com.github.novicezk.midjourney.service.impl;
 
 
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.github.novicezk.midjourney.ReturnCode;
 import com.github.novicezk.midjourney.enums.BlendDimensions;
 import com.github.novicezk.midjourney.result.Message;
@@ -10,8 +12,6 @@ import eu.maxschuster.dataurl.DataUrl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -61,7 +62,7 @@ public class DiscordServiceImpl implements DiscordService {
                 .replace("$message_id", messageId)
                 .replace("$index", String.valueOf(index))
                 .replace("$message_hash", messageHash);
-        paramsStr = new JSONObject(paramsStr).put("message_flags", messageFlags).toString();
+        paramsStr = new JSONObject(paramsStr).set("message_flags", messageFlags).toString();
         return postJsonAndCheckStatus(paramsStr);
     }
 
@@ -71,7 +72,7 @@ public class DiscordServiceImpl implements DiscordService {
                 .replace("$message_id", messageId)
                 .replace("$index", String.valueOf(index))
                 .replace("$message_hash", messageHash);
-        paramsStr = new JSONObject(paramsStr).put("message_flags", messageFlags).toString();
+        paramsStr = new JSONObject(paramsStr).set("message_flags", messageFlags).toString();
         return postJsonAndCheckStatus(paramsStr);
     }
 
@@ -80,7 +81,7 @@ public class DiscordServiceImpl implements DiscordService {
         String paramsStr = replaceInteractionParams(this.rerollParamsJson, nonce)
                 .replace("$message_id", messageId)
                 .replace("$message_hash", messageHash);
-        paramsStr = new JSONObject(paramsStr).put("message_flags", messageFlags).toString();
+        paramsStr = new JSONObject(paramsStr).set("message_flags", messageFlags).toString();
         return postJsonAndCheckStatus(paramsStr);
     }
 
@@ -102,18 +103,18 @@ public class DiscordServiceImpl implements DiscordService {
         for (int i = 0; i < finalFileNames.size(); i++) {
             String finalFileName = finalFileNames.get(i);
             String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
-            JSONObject attachment = new JSONObject().put("id", String.valueOf(i))
-                    .put("filename", fileName)
-                    .put("uploaded_filename", finalFileName);
-            attachments.put(attachment);
-            JSONObject option = new JSONObject().put("type", 11)
-                    .put("name", "image" + (i + 1))
-                    .put("value", i);
-            options.put(option);
+            JSONObject attachment = new JSONObject().set("id", String.valueOf(i))
+                    .set("filename", fileName)
+                    .set("uploaded_filename", finalFileName);
+            attachments.set(attachment);
+            JSONObject option = new JSONObject().set("type", 11)
+                    .set("name", "image" + (i + 1))
+                    .set("value", i);
+            options.set(option);
         }
-        options.put(new JSONObject().put("type", 3)
-                .put("name", "dimensions")
-                .put("value", "--ar " + dimensions.getValue()));
+        options.set(new JSONObject().set("type", 3)
+                .set("name", "dimensions")
+                .set("value", "--ar " + dimensions.getValue()));
         return postJsonAndCheckStatus(params.toString());
     }
 
@@ -128,22 +129,22 @@ public class DiscordServiceImpl implements DiscordService {
     public Message<String> upload(String fileName, DataUrl dataUrl) {
         try {
             JSONObject fileObj = new JSONObject();
-            fileObj.put("filename", fileName);
-            fileObj.put("file_size", dataUrl.getData().length);
-            fileObj.put("id", "0");
+            fileObj.set("filename", fileName);
+            fileObj.set("file_size", dataUrl.getData().length);
+            fileObj.set("id", "0");
             JSONObject params = new JSONObject()
-                    .put("files", new JSONArray().put(fileObj));
+                    .set("files", new JSONArray().set(fileObj));
             ResponseEntity<String> responseEntity = postJson(this.discordUploadUrl, params.toString());
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
-                log.error("上传图片到discord失败, status: {}, msg: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
+                log.error("上传图片到discord失败, status: {}, msg: {}", responseEntity.getStatusCode().value(), responseEntity.getBody());
                 return Message.of(ReturnCode.VALIDATION_ERROR, "上传图片到discord失败");
             }
-            JSONArray array = new JSONObject(responseEntity.getBody()).getJSONArray("attachments");
-            if (array.length() == 0) {
+            JSONArray array = new JSONObject(Objects.requireNonNull(responseEntity.getBody())).getJSONArray("attachments");
+            if (array.isEmpty()) {
                 return Message.of(ReturnCode.VALIDATION_ERROR, "上传图片到discord失败");
             }
-            String uploadUrl = array.getJSONObject(0).getString("upload_url");
-            String uploadFilename = array.getJSONObject(0).getString("upload_filename");
+            String uploadUrl = array.getJSONObject(0).getStr("upload_url");
+            String uploadFilename = array.getJSONObject(0).getStr("upload_filename");
             putFile(uploadUrl, dataUrl);
             return Message.success(uploadFilename);
         } catch (Exception e) {
@@ -161,13 +162,13 @@ public class DiscordServiceImpl implements DiscordService {
                 .replace("$final_file_name", finalFileName);
         ResponseEntity<String> responseEntity = postJson(this.discordSendMessageUrl, paramsStr);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            log.error("发送图片消息到discord失败, status: {}, msg: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
+            log.error("发送图片消息到discord失败, status: {}, msg: {}", responseEntity.getStatusCode().value(), responseEntity.getBody());
             return Message.of(ReturnCode.VALIDATION_ERROR, "发送图片消息到discord失败");
         }
-        JSONObject result = new JSONObject(responseEntity.getBody());
-        JSONArray attachments = result.optJSONArray("attachments");
+        JSONObject result = new JSONObject(Objects.requireNonNull(responseEntity.getBody()));
+        JSONArray attachments = result.getJSONArray("attachments");
         if (!attachments.isEmpty()) {
-            return Message.success(attachments.getJSONObject(0).optString("url"));
+            return Message.success(attachments.getJSONObject(0).getStr("url"));
         }
         return Message.failure("发送图片消息到discord失败: 图片不存在");
     }
@@ -178,7 +179,7 @@ public class DiscordServiceImpl implements DiscordService {
         headers.setContentType(MediaType.valueOf(dataUrl.getMimeType()));
         headers.setContentLength(dataUrl.getData().length);
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(dataUrl.getData(), headers);
-        new RestTemplate().put(uploadUrl, requestEntity);
+        restTemplate.put(uploadUrl, requestEntity);
     }
 
     private ResponseEntity<String> postJson(String paramsStr) {
@@ -191,7 +192,7 @@ public class DiscordServiceImpl implements DiscordService {
         headers.set("Authorization", this.discordUserToken);
         headers.add("User-Agent", this.userAgent);
         HttpEntity<String> httpEntity = new HttpEntity<>(paramsStr, headers);
-        return new RestTemplate().postForEntity(url, httpEntity, String.class);
+        return restTemplate.postForEntity(url, httpEntity, String.class);
     }
 
     private Message<Void> postJsonAndCheckStatus(String paramsStr) {
@@ -200,13 +201,13 @@ public class DiscordServiceImpl implements DiscordService {
             if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
                 return Message.success();
             }
-            return Message.of(responseEntity.getStatusCodeValue(), CharSequenceUtil.sub(responseEntity.getBody(), 0, 100));
+            return Message.of(responseEntity.getStatusCode().value(), CharSequenceUtil.sub(responseEntity.getBody(), 0, 100));
         } catch (HttpClientErrorException e) {
             try {
                 JSONObject error = new JSONObject(e.getResponseBodyAsString());
-                return Message.of(error.optInt("code", e.getRawStatusCode()), error.optString("message"));
+                return Message.of(error.getInt("code", e.getStatusCode().value()), error.getStr("message"));
             } catch (Exception je) {
-                return Message.of(e.getRawStatusCode(), CharSequenceUtil.sub(e.getMessage(), 0, 100));
+                return Message.of(e.getStatusCode().value(), CharSequenceUtil.sub(e.getMessage(), 0, 100));
             }
         }
     }

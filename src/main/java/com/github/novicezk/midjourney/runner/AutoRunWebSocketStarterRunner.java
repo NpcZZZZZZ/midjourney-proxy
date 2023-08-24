@@ -2,6 +2,7 @@ package com.github.novicezk.midjourney.runner;
 
 import com.github.novicezk.midjourney.wss.WebSocketStarter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @email 946123601@qq.com
  * @date 2023/6/28
  **/
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AutoRunWebSocketStarterRunner implements ApplicationRunner {
