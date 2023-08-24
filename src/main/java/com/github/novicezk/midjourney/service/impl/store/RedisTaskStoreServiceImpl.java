@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RedisTaskStoreServiceImpl implements TaskStoreService {
-    private static final String KEY_PREFIX = "mj-task-store::";
+    private static final String KEY_PREFIX = "mj-task-store:task:";
 
     private final Duration timeout;
     private final RedisTemplate<String, Object> redisTemplate;
