@@ -16,7 +16,6 @@ import com.github.novicezk.midjourney.service.impl.store.RedisTaskStoreServiceIm
 import com.github.novicezk.midjourney.service.impl.translate.BaiduTranslateServiceImpl;
 import com.github.novicezk.midjourney.service.impl.translate.GPTTranslateServiceImpl;
 import com.github.novicezk.midjourney.support.DiscordHelper;
-import com.github.novicezk.midjourney.support.Task;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
