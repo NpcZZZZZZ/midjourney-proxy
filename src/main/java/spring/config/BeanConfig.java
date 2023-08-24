@@ -12,8 +12,6 @@ import com.github.novicezk.midjourney.service.impl.translate.BaiduTranslateServi
 import com.github.novicezk.midjourney.service.impl.translate.GPTTranslateServiceImpl;
 import com.github.novicezk.midjourney.support.DiscordHelper;
 import com.github.novicezk.midjourney.support.Task;
-import com.github.novicezk.midjourney.support.TaskMixin;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +29,6 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableConfigurationProperties(ProxyProperties.class)
 public class BeanConfig {
-
 
     @Bean
     public RestTemplate restTemplate() {
@@ -85,15 +82,4 @@ public class BeanConfig {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Task.class));
         return redisTemplate;
     }
-
-
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(ProxyProperties properties) {
-        if (properties.isIncludeTaskExtended()) {
-            return builder -> {
-            };
-        }
-        return builder -> builder.mixIn(Task.class, TaskMixin.class);
-    }
-
 }

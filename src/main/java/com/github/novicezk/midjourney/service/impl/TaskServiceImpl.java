@@ -1,5 +1,6 @@
 package com.github.novicezk.midjourney.service.impl;
 
+import com.github.novicezk.midjourney.Constants;
 import com.github.novicezk.midjourney.ReturnCode;
 import com.github.novicezk.midjourney.enums.BlendDimensions;
 import com.github.novicezk.midjourney.exception.AccountException;
@@ -31,10 +32,11 @@ public class TaskServiceImpl implements TaskService {
     private final TaskQueueHelper taskQueueHelper;
 
     @Override
-    public SubmitResultVO submitImagine(Task task, DataUrl dataUrl) {
+    public SubmitResultVO submitImagine(Task task, List<DataUrl> dataUrls) {
         DiscordService discordService = getDiscordService(task.getAssociationKey());
         return this.taskQueueHelper.submitTask(task, () -> {
-            if (dataUrl != null) {
+            List<String> imageUrls = new ArrayList<>();
+            for (DataUrl dataUrl : dataUrls) {
                 String taskFileName = getTaskFileName(task, dataUrl);
                 Message<String> uploadResult = discordService.upload(taskFileName, dataUrl);
                 if (uploadResult.getCode() != ReturnCode.SUCCESS) {
@@ -45,26 +47,34 @@ public class TaskServiceImpl implements TaskService {
                 if (sendImageResult.getCode() != ReturnCode.SUCCESS) {
                     return Message.of(sendImageResult.getCode(), sendImageResult.getDescription());
                 }
-                task.setPrompt(sendImageResult.getResult() + " " + task.getPrompt());
-                task.setPromptEn(sendImageResult.getResult() + " " + task.getPromptEn());
+                imageUrls.add(sendImageResult.getResult());
+            }
+            if (!imageUrls.isEmpty()) {
+                task.setPrompt(String.join(" ", imageUrls) + " " + task.getPrompt());
+                task.setPromptEn(String.join(" ", imageUrls) + " " + task.getPromptEn());
                 task.setDescription("/imagine " + task.getPrompt());
                 this.taskStoreService.save(task);
             }
-            return discordService.imagine(task.getPromptEn());
+            return discordService.imagine(task.getPromptEn(), task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE));
         });
     }
-
 
     @Override
     public SubmitResultVO submitUpscale(Task task, String targetMessageId, String targetMessageHash, int index, int messageFlags) {
         DiscordService discordService = getDiscordService(task.getAssociationKey());
-        return this.taskQueueHelper.submitTask(task, () -> discordService.upscale(targetMessageId, index, targetMessageHash, messageFlags));
+        return this.taskQueueHelper.submitTask(task, () -> discordService.upscale(targetMessageId, index, targetMessageHash, messageFlags, task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE)));
     }
 
     @Override
     public SubmitResultVO submitVariation(Task task, String targetMessageId, String targetMessageHash, int index, int messageFlags) {
         DiscordService discordService = getDiscordService(task.getAssociationKey());
-        return this.taskQueueHelper.submitTask(task, () -> discordService.variation(targetMessageId, index, targetMessageHash, messageFlags));
+        return this.taskQueueHelper.submitTask(task, () -> discordService.variation(targetMessageId, index, targetMessageHash, messageFlags, task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE)));
+    }
+
+    @Override
+    public SubmitResultVO submitReroll(Task task, String targetMessageId, String targetMessageHash, int messageFlags) {
+        DiscordService discordService = getDiscordService(task.getAssociationKey());
+        return this.taskQueueHelper.submitTask(task, () -> discordService.reroll(targetMessageId, targetMessageHash, messageFlags, task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE)));
     }
 
     @Override
@@ -77,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
                 return Message.of(uploadResult.getCode(), uploadResult.getDescription());
             }
             String finalFileName = uploadResult.getResult();
-            return discordService.describe(finalFileName);
+            return discordService.describe(finalFileName, task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE));
         });
     }
 
@@ -88,13 +98,13 @@ public class TaskServiceImpl implements TaskService {
             List<String> finalFileNames = new ArrayList<>();
             for (DataUrl dataUrl : dataUrls) {
                 String taskFileName = getTaskFileName(task, dataUrl);
-                Message<String> uploadResult = this.discordServiceMap.get(task.getAssociationKey()).upload(taskFileName, dataUrl);
+                Message<String> uploadResult = discordService.upload(taskFileName, dataUrl);
                 if (uploadResult.getCode() != ReturnCode.SUCCESS) {
                     return Message.of(uploadResult.getCode(), uploadResult.getDescription());
                 }
                 finalFileNames.add(uploadResult.getResult());
             }
-            return discordService.blend(finalFileNames, dimensions);
+            return discordService.blend(finalFileNames, dimensions, task.getPropertyGeneric(Constants.TASK_PROPERTY_NONCE));
         });
     }
 

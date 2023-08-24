@@ -1,3 +1,12 @@
+spring:
+  application:
+    name: midjourney-proxy
+  mvc:
+    servlet:
+      #springboot启动时就初始化mvc的DispatcherServlet
+      load-on-startup: 0
+
+
 server:
   port: 8080
   servlet:
@@ -46,5 +55,11 @@ open-api:
   description: 代理 MidJourney 的discord频道，实现api形式调用AI绘图
   concat: novicezk
   url: https://github.com/novicezk/midjourney-proxy
-  version: v2.3.5
+  version: v2.4
   terms-of-service-url: https://github.com/novicezk/midjourney-proxy
+  group:
+    api:
+      group-name: API
+      api-rule: package
+      api-rule-resources:
+        - com.github.novicezk.midjourney.controller
